@@ -5,37 +5,45 @@
  * @author (votre nom)
  * @version (un numéro de version ou une date)
  */
-public class PPrinter<T> extends Visitor<T>
+public class PPrinter extends Visitor
 {
 
+    Exp e;
     /**
      * Constructeur d'objets de classe PPrinter
      */
-    public PPrinter()
+    public PPrinter(Exp e)
     {
+        this.e = e;
     }
     
-    public T visit(Num c)
+    public String visit(Num c)
     {
-        return null;
+        return Integer.toString(c.value());
     }
-    public T visit(Div d)
+		public String visit(Neg c)
     {
-        return null;
+        return "-"+c.op().accept(this);
     }
-    public T visit(Add a)
+    public String visit(Div d)
     {
-        //print lhs, +, rhs
-        
-        return null;
+        return "(" + d.op1().accept(this) + "/" + d.op2().accept(this) + ")";
     }
-    public T visit(Mult m)
+    public String visit(Add a)
     {
-        return null;
+        return "(" + a.op1().accept(this) + "+" + a.op2().accept(this) + ")";
     }
-    public T visit(Sub s)
+    public String visit(Mult m)
     {
-        return null;
+        return "(" + m.op1().accept(this) + "*" + m.op2().accept(this) + ")";
     }
+    public String visit(Sub s)
+    {
+        return "(" + s.op1().accept(this) + "-" + s.op2().accept(this) + ")";
+    }
+		public String toString()
+		{
+			return e.accept(this);
+		}
 
 }

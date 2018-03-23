@@ -5,7 +5,7 @@ public class Mult extends Bin {
         super(op1, op2);
     }
 
-    public <T> T accept(Visitor<T> v) {
+    public String accept(Visitor v) {
         return v.visit(this);
     }
 

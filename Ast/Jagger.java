@@ -3,17 +3,30 @@
 public class Jagger implements JaggerConstants {
     public static void main(String args[]) throws ParseException
     {
-        Jagger parser = new Jagger(System.in);
-        parser.mainloop();
+                                if(args.length < 1)
+                                {
+                                        Jagger parser = new Jagger(System.in);
+                      parser.mainloop();
+                                }
+                                else
+                                {
+                                        try{
+                                                Jagger parser = new Jagger(new java.io.FileReader(args[0]));
+                                                parser.mainloop();
+                                        }
+                                        catch(Exception e){
+                                        }
+                                }
     }
 
 // Main lopp: read expressions on a line until end of file.
 //     mainloop → (expression <EOL>)* <EOF>
-  static final public void mainloop() throws ParseException {double a;
+  static final public void mainloop() throws ParseException {Exp a;
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case NUMBER:
+      case 8:
       case 11:{
         ;
         break;
@@ -24,14 +37,14 @@ public class Jagger implements JaggerConstants {
       }
       a = expression();
       jj_consume_token(EOL);
-System.out.println(a);
+System.out.println(new PPrinter(a));
     }
     jj_consume_token(0);
   }
 
 // Expression (the axiom).
 // E -> T ('+'T | '-'T)*
-  static final public double expression() throws ParseException {double a,b;
+  static final public Exp expression() throws ParseException {Exp a,b;
     a = term();
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case 7:
@@ -40,13 +53,13 @@ System.out.println(a);
       case 7:{
         jj_consume_token(7);
         b = expression();
-a += b;
+a = new Add(a,b);
         break;
         }
       case 8:{
         jj_consume_token(8);
         b = expression();
-a -= b;
+a = new Sub(a,b);
         break;
         }
       default:
@@ -66,7 +79,7 @@ a -= b;
 
 // Term.
 // T -> F ('*'F | '/'F)*
-  static final public double term() throws ParseException {double a,b;
+  static final public Exp term() throws ParseException {Exp a,b;
     a = factor();
     label_2:
     while (true) {
@@ -84,13 +97,13 @@ a -= b;
       case 9:{
         jj_consume_token(9);
         b = factor();
-a *= b;
+a = new Mult(a,b);
         break;
         }
       case 10:{
         jj_consume_token(10);
         b = factor();
-a /= b;
+a = new Div(a,b);
         break;
         }
       default:
@@ -105,11 +118,11 @@ a /= b;
 
 // Factor of an expression.
 // F -> <NUMBER> | "(" E ")"
-  static final public double factor() throws ParseException {Token t; double e;
+  static final public Exp factor() throws ParseException {Token t; Exp e;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case NUMBER:{
       t = jj_consume_token(NUMBER);
-{if ("" != null) return Double.parseDouble(t.toString());}
+{if ("" != null) return new Num(Integer.parseInt(t.image));}
       break;
       }
     case 11:{
@@ -117,6 +130,12 @@ a /= b;
       e = expression();
       jj_consume_token(12);
 {if ("" != null) return e;}
+      break;
+      }
+    case 8:{
+      jj_consume_token(8);
+      e = expression();
+{if ("" != null) return new Neg(e);}
       break;
       }
     default:
@@ -143,7 +162,7 @@ a /= b;
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x810,0x180,0x180,0x600,0x600,0x810,};
+      jj_la1_0 = new int[] {0x910,0x180,0x180,0x600,0x600,0x910,};
    }
 
   /** Constructor with InputStream. */

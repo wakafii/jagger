@@ -10,7 +10,8 @@ public class Num extends Exp {
 		return i;
 	}
 
-	public <T> T accept(Visitor<T> v) {
+	public String accept(Visitor v)
+	{
 		return v.visit(this);
 	}
 	

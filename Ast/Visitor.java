@@ -1,12 +1,11 @@
 
 
-public abstract class Visitor<T>{
+public abstract class Visitor{
 
-  public abstract T visit(Num c);
-  public abstract T visit(Div d);
-  public abstract T visit(Add a);
-  public abstract T visit(Mult m);
-  public abstract T visit(Sub s);
-  
-  //public abstract Contexte contexte();
+  public abstract String visit(Num c);
+	public abstract String visit(Neg c);
+  public abstract String visit(Div d);
+  public abstract String visit(Add a);
+  public abstract String visit(Mult m);
+  public abstract String visit(Sub s);
 }
