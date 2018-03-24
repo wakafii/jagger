@@ -1,0 +1,82 @@
+// Options for JavaCC.
+options { LOOKAHEAD=1; FORCE_LA_CHECK=true; }
+
+// Fonction principale
+PARSER_BEGIN(Jagger)
+public class Jagger
+{
+    public static void main(String args[]) throws ParseException
+    {
+				if(args.length < 1)
+				{       
+					Jagger parser = new Jagger(System.in);
+		      parser.mainloop();
+				}
+				else
+				{
+					try{
+						Jagger parser = new Jagger(new java.io.FileReader(args[0]));
+						parser.mainloop();
+					}
+					catch(Exception e){
+					}
+				}
+    }
+}
+PARSER_END(Jagger)
+
+// Characters to ignore.
+SKIP: { " " | "\r" | "\t" }
+
+// Token specifications.
+TOKEN:
+{
+    < NUMBER: (<DIGIT>)+ ("." (<DIGIT>)*)? >  // A decimal number.
+|   < DIGIT: ["0"-"9"] >                      // A decimal digit.
+|   < EOL: "\n" >                             // End of line.
+}
+
+// Main lopp: read expressions on a line until end of file.
+//     mainloop → (expression <EOL>)* <EOF>
+void mainloop():
+{ Exp a; }
+{
+    (
+      a=expression() <EOL> { System.out.println(new PPrinter(a)); }
+    )*
+    <EOF>
+}
+
+// Expression (the axiom).
+// E -> T ('+'T | '-'T)*
+Exp expression():
+{ Exp a,b; }
+{
+    a=term()
+    (
+      "+" b=expression() { a = new Add(a,b); }
+    | "-" b=expression() { a = new Sub(a,b); }
+    )? { return a; }
+}
+
+// Term.
+// T -> F ('*'F | '/'F)*
+Exp term():
+{ Exp a,b; }
+{
+    a=factor()
+    (
+      "*" b=factor() { a = new Mult(a,b); }
+    | "/" b=factor() { a = new Div(a,b); }
+    )* { return a; }
+}
+
+// Factor of an expression.
+// F -> <NUMBER> | "(" E ")"
+Exp factor():
+{ Token t; Exp e; }
+{
+      t=<NUMBER> { return new Num(Integer.parseInt(t.image)); }
+    | "(" e=expression() ")" { return e; }
+		| "-" e=expression() { return new Neg(e);}
+}
