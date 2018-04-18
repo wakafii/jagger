@@ -5,14 +5,14 @@
  * @author (votre nom)
  * @version (un numéro de version ou une date)
  */
-public class PPrinter extends Visitor
+public class Evaluator extends Visitor
 {
 
     private Exp e;
     /**
      * Constructeur d'objets de classe PPrinter
      */
-    public PPrinter(Exp e)
+    public Evaluator(Exp e)
     {
         this.e = e;
     }
@@ -27,49 +27,49 @@ public class PPrinter extends Visitor
     }
     public String visit(Div d)
     {
-        return "(" + d.op1().accept(this) + "/" + d.op2().accept(this) + ")";
+        return Integer.toString(d.value());
     }
     public String visit(Add a)
     {
-        return "(" + a.op1().accept(this) + "+" + a.op2().accept(this) + ")";
+        return Integer.toString(a.value());
     }
     public String visit(Mult m)
     {
-        return "(" + m.op1().accept(this) + "*" + m.op2().accept(this) + ")";
+        return Integer.toString(m.value());
     }
     public String visit(Sub s)
     {
-        return "(" + s.op1().accept(this) + "-" + s.op2().accept(this) + ")";
+        return Integer.toString(s.value());
     }
 		public String visit(Inf i)
     {
-        return "(" + i.op1().accept(this) + "<" + i.op2().accept(this) + ")";
+        return Integer.toString(i.value());
     }
 		public String visit(Sup s)
     {
-        return "(" + s.op1().accept(this) + ">" + s.op2().accept(this) + ")";
+        return Integer.toString(s.value());
     }
 		public String visit(Equal e)
     {
-        return "(" + e.op1().accept(this) + "==" + e.op2().accept(this) + ")";
+        return Integer.toString(e.value());
     }
 		public String visit(InfEqual ie)
     {
-        return "(" + ie.op1().accept(this) + "<=" + ie.op2().accept(this) + ")";
+        return Integer.toString(ie.value());
     }
 		public String visit(SupEqual se)
     {
-        return "(" + se.op1().accept(this) + ">=" + se.op2().accept(this) + ")";
+        return Integer.toString(se.value());
     }
 
 		public String visit(Print p)
 		{
-				return "print(" + p.op().accept(this) + ")";
+				return "=>" + Integer.toString(p.op().value());
 		}
 
 		public String visit(IfThenElse ite)
 		{
-			return "If " + ite.opComp().accept(this) + " then\n " + ite.op1().accept(this) + "\nelse\n " + ite.op2().accept(this);
+				return Integer.toString(ite.value());
 		}
 
 		public String toString()

@@ -9,5 +9,10 @@ public class Add extends Bin {
 	public String accept(Visitor v) {
 		return v.visit(this);
 	}
+	
+	public int value()
+	{
+		return this.op1().value() + this.op2().value();
+	}
 
 }

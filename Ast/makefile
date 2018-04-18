@@ -10,4 +10,4 @@ check: test1.txt default
 				$(JV) Jagger test1.txt
 
 clean:
-				$(RM) *.class *.ctxt
+				$(RM) *.class *.ctxt JaggerConstants.* SimpleCharStream.* Jagger.java ParseException.* JaggerTokenManager.* TokenMgrError.*

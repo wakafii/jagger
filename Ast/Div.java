@@ -10,4 +10,9 @@ public class Div extends Bin {
 		return v.visit(this);
 	}
 
+	public int value()
+	{
+		return this.op1().value()/this.op2().value();
+	}
+
 }

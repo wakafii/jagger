@@ -1,16 +1,15 @@
-public class Neg extends Exp {
+public class Neg extends Un {
 
-		protected Exp op;
     public Neg(Exp op) {
-        this.op = op;
+        super(op);
     }
-
-		public Exp op()
-		{
-				return this.op;
-		}
 
     public String accept(Visitor v) {
         return v.visit(this);
     }
+		
+		public int value()
+		{
+			return (-1) * this.op().value();
+		}
 }

@@ -14,8 +14,10 @@ public class Jagger
 				}
 				else
 				{
+					String fichier = args[0];
 					try{
-						Jagger parser = new Jagger(new java.io.FileReader(args[0]));
+						java.io.FileReader file = new java.io.FileReader(fichier);
+						Jagger parser = new Jagger(file);
 						parser.mainloop();
 					}
 					catch(Exception e){
@@ -42,9 +44,22 @@ void mainloop():
 { Exp a; }
 {
     (
-      a=expression() <EOL> { System.out.println(new PPrinter(a)); }
+      a=expressionComp() <EOL> { System.out.println(new PPrinter(a)); System.out.println(new Evaluator(a)); }
     )*
     <EOF>
+}
+
+Exp expressionComp():
+{ Exp a,b; }
+{
+    a=expression()
+    (
+		  "<" b=expression() { a = new Inf(a,b); }
+		| ">" b=expression() { a = new Sup(a,b); }
+		| "=" b=expression() { a = new Equal(a,b); }
+		| "<=" b=expression() { a = new InfEqual(a,b); }
+		| ">=" b=expression() { a = new SupEqual(a,b); }
+		)? { return a; }
 }
 
 // Expression (the axiom).
@@ -74,9 +89,11 @@ Exp term():
 // Factor of an expression.
 // F -> <NUMBER> | "(" E ")"
 Exp factor():
-{ Token t; Exp e; }
+{ Token t; Exp e,a,b;}
 {
       t=<NUMBER> { return new Num(Integer.parseInt(t.image)); }
     | "(" e=expression() ")" { return e; }
 		| "-" e=expression() { return new Neg(e);}
+		| "print(" e=expression() ")" { return new Print(e);}
+		| "if " e=expressionComp() " then " a=expression() " else " b=expression() { return new IfThenElse(e,a,b);}
 }

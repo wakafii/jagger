@@ -10,8 +10,10 @@ public class Jagger implements JaggerConstants {
                                 }
                                 else
                                 {
+                                        String fichier = args[0];
                                         try{
-                                                Jagger parser = new Jagger(new java.io.FileReader(args[0]));
+                                                java.io.FileReader file = new java.io.FileReader(fichier);
+                                                Jagger parser = new Jagger(file);
                                                 parser.mainloop();
                                         }
                                         catch(Exception e){
@@ -26,8 +28,10 @@ public class Jagger implements JaggerConstants {
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case NUMBER:
-      case 8:
-      case 11:{
+      case 13:
+      case 16:
+      case 18:
+      case 19:{
         ;
         break;
         }
@@ -35,31 +39,50 @@ public class Jagger implements JaggerConstants {
         jj_la1[0] = jj_gen;
         break label_1;
       }
-      a = expression();
+      a = expressionComp();
       jj_consume_token(EOL);
-System.out.println(new PPrinter(a));
+System.out.println(new PPrinter(a)); System.out.println(new Evaluator(a));
     }
     jj_consume_token(0);
   }
 
-// Expression (the axiom).
-// E -> T ('+'T | '-'T)*
-  static final public Exp expression() throws ParseException {Exp a,b;
-    a = term();
+  static final public Exp expressionComp() throws ParseException {Exp a,b;
+    a = expression();
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case 7:
-    case 8:{
+    case 8:
+    case 9:
+    case 10:
+    case 11:{
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case 7:{
         jj_consume_token(7);
         b = expression();
-a = new Add(a,b);
+a = new Inf(a,b);
         break;
         }
       case 8:{
         jj_consume_token(8);
         b = expression();
-a = new Sub(a,b);
+a = new Sup(a,b);
+        break;
+        }
+      case 9:{
+        jj_consume_token(9);
+        b = expression();
+a = new Equal(a,b);
+        break;
+        }
+      case 10:{
+        jj_consume_token(10);
+        b = expression();
+a = new InfEqual(a,b);
+        break;
+        }
+      case 11:{
+        jj_consume_token(11);
+        b = expression();
+a = new SupEqual(a,b);
         break;
         }
       default:
@@ -77,6 +100,41 @@ a = new Sub(a,b);
     throw new Error("Missing return statement in function");
   }
 
+// Expression (the axiom).
+// E -> T ('+'T | '-'T)*
+  static final public Exp expression() throws ParseException {Exp a,b;
+    a = term();
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case 12:
+    case 13:{
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case 12:{
+        jj_consume_token(12);
+        b = expression();
+a = new Add(a,b);
+        break;
+        }
+      case 13:{
+        jj_consume_token(13);
+        b = expression();
+a = new Sub(a,b);
+        break;
+        }
+      default:
+        jj_la1[3] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+      break;
+      }
+    default:
+      jj_la1[4] = jj_gen;
+      ;
+    }
+{if ("" != null) return a;}
+    throw new Error("Missing return statement in function");
+  }
+
 // Term.
 // T -> F ('*'F | '/'F)*
   static final public Exp term() throws ParseException {Exp a,b;
@@ -84,30 +142,30 @@ a = new Sub(a,b);
     label_2:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case 9:
-      case 10:{
+      case 14:
+      case 15:{
         ;
         break;
         }
       default:
-        jj_la1[3] = jj_gen;
+        jj_la1[5] = jj_gen;
         break label_2;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case 9:{
-        jj_consume_token(9);
+      case 14:{
+        jj_consume_token(14);
         b = factor();
 a = new Mult(a,b);
         break;
         }
-      case 10:{
-        jj_consume_token(10);
+      case 15:{
+        jj_consume_token(15);
         b = factor();
 a = new Div(a,b);
         break;
         }
       default:
-        jj_la1[4] = jj_gen;
+        jj_la1[6] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -118,28 +176,45 @@ a = new Div(a,b);
 
 // Factor of an expression.
 // F -> <NUMBER> | "(" E ")"
-  static final public Exp factor() throws ParseException {Token t; Exp e;
+  static final public Exp factor() throws ParseException {Token t; Exp e,a,b;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case NUMBER:{
       t = jj_consume_token(NUMBER);
 {if ("" != null) return new Num(Integer.parseInt(t.image));}
       break;
       }
-    case 11:{
-      jj_consume_token(11);
+    case 16:{
+      jj_consume_token(16);
       e = expression();
-      jj_consume_token(12);
+      jj_consume_token(17);
 {if ("" != null) return e;}
       break;
       }
-    case 8:{
-      jj_consume_token(8);
+    case 13:{
+      jj_consume_token(13);
       e = expression();
 {if ("" != null) return new Neg(e);}
       break;
       }
+    case 18:{
+      jj_consume_token(18);
+      e = expression();
+      jj_consume_token(17);
+{if ("" != null) return new Print(e);}
+      break;
+      }
+    case 19:{
+      jj_consume_token(19);
+      e = expressionComp();
+      jj_consume_token(20);
+      a = expression();
+      jj_consume_token(21);
+      b = expression();
+{if ("" != null) return new IfThenElse(e,a,b);}
+      break;
+      }
     default:
-      jj_la1[5] = jj_gen;
+      jj_la1[7] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -156,13 +231,13 @@ a = new Div(a,b);
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[6];
+  static final private int[] jj_la1 = new int[8];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x910,0x180,0x180,0x600,0x600,0x910,};
+      jj_la1_0 = new int[] {0xd2010,0xf80,0xf80,0x3000,0x3000,0xc000,0xc000,0xd2010,};
    }
 
   /** Constructor with InputStream. */
@@ -183,7 +258,7 @@ a = new Div(a,b);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 8; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -197,7 +272,7 @@ a = new Div(a,b);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 8; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -214,7 +289,7 @@ a = new Div(a,b);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 8; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -224,7 +299,7 @@ a = new Div(a,b);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 8; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -240,7 +315,7 @@ a = new Div(a,b);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 8; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -249,7 +324,7 @@ a = new Div(a,b);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 8; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -300,12 +375,12 @@ a = new Div(a,b);
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[13];
+    boolean[] la1tokens = new boolean[22];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 8; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -314,7 +389,7 @@ a = new Div(a,b);
         }
       }
     }
-    for (int i = 0; i < 13; i++) {
+    for (int i = 0; i < 22; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
