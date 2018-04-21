@@ -28,10 +28,11 @@ public class Jagger implements JaggerConstants {
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case NUMBER:
-      case 13:
-      case 16:
+      case STRING:
       case 18:
-      case 19:{
+      case 21:
+      case 23:
+      case 24:{
         ;
         break;
         }
@@ -49,38 +50,38 @@ System.out.println(new PPrinter(a)); System.out.println(new Evaluator(a));
   static final public Exp expressionComp() throws ParseException {Exp a,b;
     a = expression();
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:{
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+    case 16:{
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case 7:{
-        jj_consume_token(7);
+      case 12:{
+        jj_consume_token(12);
         b = expression();
 a = new Inf(a,b);
         break;
         }
-      case 8:{
-        jj_consume_token(8);
+      case 13:{
+        jj_consume_token(13);
         b = expression();
 a = new Sup(a,b);
         break;
         }
-      case 9:{
-        jj_consume_token(9);
+      case 14:{
+        jj_consume_token(14);
         b = expression();
 a = new Equal(a,b);
         break;
         }
-      case 10:{
-        jj_consume_token(10);
+      case 15:{
+        jj_consume_token(15);
         b = expression();
 a = new InfEqual(a,b);
         break;
         }
-      case 11:{
-        jj_consume_token(11);
+      case 16:{
+        jj_consume_token(16);
         b = expression();
 a = new SupEqual(a,b);
         break;
@@ -105,17 +106,17 @@ a = new SupEqual(a,b);
   static final public Exp expression() throws ParseException {Exp a,b;
     a = term();
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case 12:
-    case 13:{
+    case 17:
+    case 18:{
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case 12:{
-        jj_consume_token(12);
+      case 17:{
+        jj_consume_token(17);
         b = expression();
 a = new Add(a,b);
         break;
         }
-      case 13:{
-        jj_consume_token(13);
+      case 18:{
+        jj_consume_token(18);
         b = expression();
 a = new Sub(a,b);
         break;
@@ -142,8 +143,8 @@ a = new Sub(a,b);
     label_2:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case 14:
-      case 15:{
+      case 19:
+      case 20:{
         ;
         break;
         }
@@ -152,14 +153,14 @@ a = new Sub(a,b);
         break label_2;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case 14:{
-        jj_consume_token(14);
+      case 19:{
+        jj_consume_token(19);
         b = factor();
 a = new Mult(a,b);
         break;
         }
-      case 15:{
-        jj_consume_token(15);
+      case 20:{
+        jj_consume_token(20);
         b = factor();
 a = new Div(a,b);
         break;
@@ -183,32 +184,37 @@ a = new Div(a,b);
 {if ("" != null) return new Num(Integer.parseInt(t.image));}
       break;
       }
-    case 16:{
-      jj_consume_token(16);
-      e = expression();
-      jj_consume_token(17);
-{if ("" != null) return e;}
+    case STRING:{
+      t = jj_consume_token(STRING);
+{if ("" != null) return new ExpString(t.toString());}
       break;
       }
-    case 13:{
-      jj_consume_token(13);
+    case 21:{
+      jj_consume_token(21);
       e = expression();
-{if ("" != null) return new Neg(e);}
+      jj_consume_token(22);
+{if ("" != null) return e;}
       break;
       }
     case 18:{
       jj_consume_token(18);
       e = expression();
-      jj_consume_token(17);
+{if ("" != null) return new Neg(e);}
+      break;
+      }
+    case 23:{
+      jj_consume_token(23);
+      e = expression();
+      jj_consume_token(22);
 {if ("" != null) return new Print(e);}
       break;
       }
-    case 19:{
-      jj_consume_token(19);
+    case 24:{
+      jj_consume_token(24);
       e = expressionComp();
-      jj_consume_token(20);
+      jj_consume_token(25);
       a = expression();
-      jj_consume_token(21);
+      jj_consume_token(26);
       b = expression();
 {if ("" != null) return new IfThenElse(e,a,b);}
       break;
@@ -237,7 +243,7 @@ a = new Div(a,b);
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0xd2010,0xf80,0xf80,0x3000,0x3000,0xc000,0xc000,0xd2010,};
+      jj_la1_0 = new int[] {0x1a40050,0x1f000,0x1f000,0x60000,0x60000,0x180000,0x180000,0x1a40050,};
    }
 
   /** Constructor with InputStream. */
@@ -375,7 +381,7 @@ a = new Div(a,b);
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[22];
+    boolean[] la1tokens = new boolean[27];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -389,7 +395,7 @@ a = new Div(a,b);
         }
       }
     }
-    for (int i = 0; i < 22; i++) {
+    for (int i = 0; i < 27; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

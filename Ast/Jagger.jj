@@ -35,6 +35,11 @@ TOKEN:
 {
     < NUMBER: (<DIGIT>)+ ("." (<DIGIT>)*)? >  // A decimal number.
 |   < DIGIT: ["0"-"9"] >                      // A decimal digit.
+|   < STRING: "\"" ((~["\n","\r","\""])*)? "\"">
+|   < CHAR: ["a"-"z","A"-"Z"]>
+|		< KEYLET : "let">
+|		< KEYIN : "in">
+|		< KEYEND : "end">
 |   < EOL: "\n" >                             // End of line.
 }
 
@@ -92,6 +97,7 @@ Exp factor():
 { Token t; Exp e,a,b;}
 {
       t=<NUMBER> { return new Num(Integer.parseInt(t.image)); }
+		| t=<STRING> { return new ExpString(t.toString()); }
     | "(" e=expression() ")" { return e; }
 		| "-" e=expression() { return new Neg(e);}
 		| "print(" e=expression() ")" { return new Print(e);}

@@ -31,7 +31,7 @@ public class PPrinter extends Visitor
     }
     public String visit(Add a)
     {
-        return "(" + a.op1().accept(this) + "+" + a.op2().accept(this) + ")";
+				return "(" + a.op1().accept(this) + "+" + a.op2().accept(this) + ")";
     }
     public String visit(Mult m)
     {
@@ -43,23 +43,23 @@ public class PPrinter extends Visitor
     }
 		public String visit(Inf i)
     {
-        return "(" + i.op1().accept(this) + "<" + i.op2().accept(this) + ")";
+				return "(" + i.op1().accept(this) + "<" + i.op2().accept(this) + ")";
     }
 		public String visit(Sup s)
     {
-        return "(" + s.op1().accept(this) + ">" + s.op2().accept(this) + ")";
+				return "(" + s.op1().accept(this) + ">" + s.op2().accept(this) + ")";
     }
 		public String visit(Equal e)
     {
-        return "(" + e.op1().accept(this) + "==" + e.op2().accept(this) + ")";
+				return "(" + e.op1().accept(this) + "==" + e.op2().accept(this) + ")";
     }
 		public String visit(InfEqual ie)
     {
-        return "(" + ie.op1().accept(this) + "<=" + ie.op2().accept(this) + ")";
+				return "(" + ie.op1().accept(this) + "<=" + ie.op2().accept(this) + ")";
     }
 		public String visit(SupEqual se)
     {
-        return "(" + se.op1().accept(this) + ">=" + se.op2().accept(this) + ")";
+				return "(" + se.op1().accept(this) + ">=" + se.op2().accept(this) + ")";
     }
 
 		public String visit(Print p)
@@ -70,6 +70,11 @@ public class PPrinter extends Visitor
 		public String visit(IfThenElse ite)
 		{
 			return "If " + ite.opComp().accept(this) + " then\n " + ite.op1().accept(this) + "\nelse\n " + ite.op2().accept(this);
+		}
+
+		public String visit(ExpString es)
+		{
+			return es.op();
 		}
 
 		public String toString()

@@ -15,4 +15,5 @@ public abstract class Visitor{
 	public abstract String visit(SupEqual se);
 	public abstract String visit(Print p);
 	public abstract String visit(IfThenElse ite);
+	public abstract String visit(ExpString es);
 }
