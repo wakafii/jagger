@@ -42,7 +42,7 @@ TOKEN:
 |		< KEYIN : "in">
 |		< KEYEND : "end">
 |		< VAR : "var "(<CHAR>)+ ((<DIGIT>)* (<CHAR>)*)* >
-|		< ERREUR : (~["\n","\r","\""])* >
+//|		< ERREUR : (~["\n","\r","\""])* >
 |   < EOL: "\n" >                             // End of line.
 }
 
@@ -126,8 +126,8 @@ Exp factor():
 		| t=<VAR> ":=" e=expressionComp() { return new Var(t.toString(), e);}
 }
 
-Exp erreur():
+/*Exp erreur():
 { Token t; }
 {
 			t=<ERREUR> { return null; }
-}
+}*/
