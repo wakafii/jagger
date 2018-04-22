@@ -3,6 +3,7 @@ options { LOOKAHEAD=1; FORCE_LA_CHECK=true; }
 
 // Fonction principale
 PARSER_BEGIN(Jagger)
+import java.util.Vector;
 public class Jagger
 {
     public static void main(String args[]) throws ParseException
@@ -40,6 +41,7 @@ TOKEN:
 |		< KEYLET : "let">
 |		< KEYIN : "in">
 |		< KEYEND : "end">
+|		< VAR : "var "(<CHAR>)+ ((<DIGIT>)* (<CHAR>)*)* >
 |   < EOL: "\n" >                             // End of line.
 }
 
@@ -49,9 +51,26 @@ void mainloop():
 { Exp a; }
 {
     (
-      a=expressionComp() <EOL> { System.out.println(new PPrinter(a)); System.out.println(new Evaluator(a)); }
+      a=let() <EOL> { System.out.println(new PPrinter(a)); System.out.println(new Evaluator(a)); }
     )*
     <EOF>
+}
+
+Exp let():
+{ Token t;Exp a,b;/* Vector<Exp> vecExp = new Vector<Exp>(); Vector<Var> vecVar = new Vector<Var>(); */}
+{
+	a=expressionComp()
+	(
+		<KEYLET>
+		(
+			t=<VAR> ":=" b=expressionComp()<EOL> { b = new Var(t.toString(),b); /*vecVar.add(b);*/ }
+		)*
+		<KEYIN>
+		(
+			b = let()<EOL> { /*vecExp.add(b);*/ }
+		)*
+		<KEYEND> /*{ a = new LetInEnd(vecVar, vecExp); }*/
+	)? {/*vecVar.clear(); vecExp.clear(); */return a; }
 }
 
 Exp expressionComp():
@@ -102,4 +121,5 @@ Exp factor():
 		| "-" e=expression() { return new Neg(e);}
 		| "print(" e=expression() ")" { return new Print(e);}
 		| "if " e=expressionComp() " then " a=expression() " else " b=expression() { return new IfThenElse(e,a,b);}
+		| t=<VAR> ":=" e=expressionComp() { return new Var(t.toString(), e);}
 }

@@ -23,7 +23,9 @@ public interface JaggerConstants {
   /** RegularExpression Id. */
   int KEYEND = 10;
   /** RegularExpression Id. */
-  int EOL = 11;
+  int VAR = 11;
+  /** RegularExpression Id. */
+  int EOL = 12;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -41,7 +43,9 @@ public interface JaggerConstants {
     "\"let\"",
     "\"in\"",
     "\"end\"",
+    "<VAR>",
     "\"\\n\"",
+    "\":=\"",
     "\"<\"",
     "\">\"",
     "\"=\"",

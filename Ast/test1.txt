@@ -5,11 +5,13 @@
 8*9+6<65*3/4-2
 print(8*9+4/7)
 if 8*9+3<100 then print(5) else 8
-if 4<3 then if 5>2 then print(2) else 4 else 3
+if 4<5 then if 5>2 then print(2) else 4 else 3
 "azerfghdf"
 "7520hj"
 "azefgh"+"ujn"
 "azertyu"<"qsdfg"
 "azertyui">"wxcvbn"
 "azertyui"="sdfghjk"
+var azer25 := 5
+let var azr5 := 4 var gth := 2 in 8+6 5+3 end
 

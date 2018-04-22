@@ -77,6 +77,29 @@ public class PPrinter extends Visitor
 			return es.op();
 		}
 
+		public String visit(Var v)
+		{
+			return v.name();
+		}
+
+		public String visit(LetInEnd lie)
+		{
+			String res = "Let\n";
+			for(int i=0;i<lie.varSize();i++)
+			{
+				Var v = lie.getVar(i);
+				res += v.name() + " := " + Integer.toString(v.value()) + "\n";
+			}
+			res += "In\n";
+			for(int i=0;i<lie.expSize();i++)
+			{
+				Exp e = lie.getExp(i);
+				res += e.accept(this) + "\n";
+			}
+			res += "End";
+			return res;
+		}
+
 		public String toString()
 		{
 			return e.accept(this);

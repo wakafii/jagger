@@ -162,6 +162,22 @@ public class Evaluator extends Visitor
 			return es.op();
 		}
 
+		public String visit(Var v)
+		{
+			return Integer.toString(v.value());
+		}
+
+		public String visit(LetInEnd lie)
+		{
+			String res = "";
+			for(int i = 0;i<lie.expSize();i++)
+			{
+				Exp e = lie.getExp(i);
+				res += e.accept(this) + "\n";
+			}
+			return res;
+		}
+
 		public String toString()
 		{
 			return e.accept(this);

@@ -16,4 +16,6 @@ public abstract class Visitor{
 	public abstract String visit(Print p);
 	public abstract String visit(IfThenElse ite);
 	public abstract String visit(ExpString es);
+	public abstract String visit(Var v);
+	public abstract String visit(LetInEnd lie);
 }
