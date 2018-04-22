@@ -42,6 +42,7 @@ TOKEN:
 |		< KEYIN : "in">
 |		< KEYEND : "end">
 |		< VAR : "var "(<CHAR>)+ ((<DIGIT>)* (<CHAR>)*)* >
+|		< ERREUR : (~["\n","\r","\""])* >
 |   < EOL: "\n" >                             // End of line.
 }
 
@@ -52,6 +53,7 @@ void mainloop():
 {
     (
       a=let() <EOL> { System.out.println(new PPrinter(a)); System.out.println(new Evaluator(a)); }
+		//| a=erreur() <EOL> { System.out.println("erreur");}
     )*
     <EOF>
 }
@@ -122,4 +124,10 @@ Exp factor():
 		| "print(" e=expression() ")" { return new Print(e);}
 		| "if " e=expressionComp() " then " a=expression() " else " b=expression() { return new IfThenElse(e,a,b);}
 		| t=<VAR> ":=" e=expressionComp() { return new Var(t.toString(), e);}
+}
+
+Exp erreur():
+{ Token t; }
+{
+			t=<ERREUR> { return null; }
 }
